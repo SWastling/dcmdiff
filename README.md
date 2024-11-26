@@ -53,35 +53,25 @@ tags, elements with a given VR, elements in a particular group or specific tags.
 They can also provide a list of tags to compare.
 
 ## Installing
-1. Create a directory to store the package e.g.:
+1. Create a new virtual environment in which to install `dcmdiff`:
 
     ```bash
-    mkdir dcmdiff
-    ```
-
-2. Create a new virtual environment in which to install `dcmdiff`:
-
-    ```bash
-    python3 -m venv dcmdiff-env
+    uv venv dcmdiff-venv
     ```
    
-3. Activate the virtual environment:
+2. Activate the virtual environment:
 
     ```bash
-    source dcmdiff-env/bin/activate
+    source dcmdiff-venv/bin/activate
     ```
 
-4. Upgrade `pip` and `build`:
-
+4. Install using `uv pip`:
     ```bash
-    pip install --upgrade pip
-    pip install --upgrade build
+    uv pip install git+https://github.com/SWastling/dcmdiff.git
     ```
-
-5. Install using `pip`:
-    ```bash
-    pip install git+https://github.com/SWastling/dcmdiff.git
-    ```
+   
+> [!TIP]
+> You can also run `dcmdiff` without installing it using [uvx](https://docs.astral.sh/uv/guides/tools/) i.e. with the command `uvx --from  git+https://github.com/SWastling/dcmdiff.git dcmdiff`
 
 ## License
 See [MIT license](./LICENSE)
