@@ -855,10 +855,10 @@ def test_tags_to_list():
     tag_list = dcmdiff.tags_to_list(ds)
 
     ref_tag_list = [
-        "(0010, 0010) Patient's Name                      PN: 'SURNAME^Firstname'\n",
-        "(0010, 0020) Patient ID                          LO: 'ABC1234567'\n",
-        "(0020, 0011) Series Number                       IS: '1'\n",
-        "(0020, 0013) Instance Number                     IS: '1'",
+        "(0010,0010) Patient's Name                      PN: 'SURNAME^Firstname'\n",
+        "(0010,0020) Patient ID                          LO: 'ABC1234567'\n",
+        "(0020,0011) Series Number                       IS: '1'\n",
+        "(0020,0013) Instance Number                     IS: '1'",
     ]
 
     assert tag_list == ref_tag_list
