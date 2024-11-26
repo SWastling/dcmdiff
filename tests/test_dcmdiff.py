@@ -869,19 +869,19 @@ SCRIPT_USAGE = f"usage: {SCRIPT_NAME} [-h]"
 
 
 def test_prints_help_1(script_runner):
-    result = script_runner.run(SCRIPT_NAME)
+    result = script_runner.run([SCRIPT_NAME])
     assert result.success
     assert result.stdout.startswith(SCRIPT_USAGE)
 
 
 def test_prints_help_2(script_runner):
-    result = script_runner.run(SCRIPT_NAME, "-h")
+    result = script_runner.run([SCRIPT_NAME, "-h"])
     assert result.success
     assert result.stdout.startswith(SCRIPT_USAGE)
 
 
 def test_prints_help_for_invalid_option(script_runner):
-    result = script_runner.run(SCRIPT_NAME, "-!")
+    result = script_runner.run([SCRIPT_NAME, "-!"])
     assert not result.success
     assert result.stderr.startswith(SCRIPT_USAGE)
 
@@ -927,7 +927,7 @@ def test_dcmdiff_single_files(tmp_path, script_runner):
 
     output_dir = tmp_path / "htmldiff"
 
-    result = script_runner.run(SCRIPT_NAME, str(fp_r), str(fp_t), "-o", str(output_dir))
+    result = script_runner.run([SCRIPT_NAME, str(fp_r), str(fp_t), "-o", str(output_dir)])
     assert result.success
     assert output_dir.is_dir()
 
@@ -1024,11 +1024,11 @@ def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
     # chose not to select a series when no matches found automatically
     with mock.patch.object(builtins, "input", lambda _: "n"):
         result = script_runner.run(
-            SCRIPT_NAME,
+            [SCRIPT_NAME,
             str(ref_dp),
             str(test_dp),
             "-o",
-            str(output_dir),
+            str(output_dir)]
         )
 
     assert result.success
@@ -1126,7 +1126,7 @@ def test_dcmdiff_dirs_no_match_inst(tmp_path, script_runner):
 
     # no matching instance number
     result = script_runner.run(
-        SCRIPT_NAME, str(ref_dp), str(test_dp), "-o", str(output_dir)
+        [SCRIPT_NAME, str(ref_dp), str(test_dp), "-o", str(output_dir)]
     )
 
     assert result.success
@@ -1235,7 +1235,7 @@ def test_dcmdiff_single_remove_tags(tmp_path, script_runner):
         f.writelines(["RepetitionTime\n", "0x00100010\n"])
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(fp_r),
         str(fp_t),
         "-o",
@@ -1251,7 +1251,7 @@ def test_dcmdiff_single_remove_tags(tmp_path, script_runner):
         "0x0010",
         "--ignore-tag",
         "Rows",
-        "SeriesNumber",
+        "SeriesNumber"]
     )
     assert result.success
     assert output_dir.is_dir()
