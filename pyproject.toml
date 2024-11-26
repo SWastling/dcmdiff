@@ -1,6 +1,6 @@
 [project]
 name = "dcmdiff"
-version = "1.0.1"
+version = "1.0.0"
 description = "Find differences between DICOM instances, series or studies"
 readme = "README.md"
 authors = [
@@ -21,6 +21,7 @@ build-backend = "setuptools.build_meta"
 [dependency-groups]
 dev = [
     "coverage>=7.6.8",
+    "mock>=5.1.0",
     "pytest>=8.3.3",
     "pytest-console-scripts>=1.4.1",
     "ruff>=0.8.0",
