@@ -121,10 +121,9 @@ def test_append_if_dicom(tmp_path):
     ds_1.file_meta.ImplementationVersionName = "report"
     ds_1.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_1.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
-    ds_1.is_implicit_VR = False
-    ds_1.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_1.file_meta)
-    ds_1.save_as(fp_1, write_like_original=False)
+    ds_1.save_as(fp_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_2 = tmp_path / "test_2.dcm"
     ds_2 = pydicom.dataset.Dataset()
@@ -140,10 +139,9 @@ def test_append_if_dicom(tmp_path):
     ds_2.file_meta.ImplementationVersionName = "report"
     ds_2.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_2.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
-    ds_2.is_implicit_VR = False
-    ds_2.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_1.file_meta)
-    ds_2.save_as(fp_2, write_like_original=False)
+    ds_2.save_as(fp_2, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fs = FileSet()
     fp_3 = tmp_path / "DICOMDIR"
@@ -218,10 +216,9 @@ def test_make_ds_list_file(tmp_path):
     ds_1.file_meta.ImplementationVersionName = "report"
     ds_1.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_1.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
-    ds_1.is_implicit_VR = False
-    ds_1.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_1.file_meta)
-    ds_1.save_as(fp_1, write_like_original=False)
+    ds_1.save_as(fp_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     ds_list = dcmdiff.make_ds_list(fp_1)
     assert ds_list == [ds_1]
@@ -246,10 +243,9 @@ def test_make_ds_list_dir(tmp_path):
     ds_1.file_meta.ImplementationVersionName = "report"
     ds_1.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_1.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
-    ds_1.is_implicit_VR = False
-    ds_1.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_1.file_meta)
-    ds_1.save_as(fp_1, write_like_original=False)
+    ds_1.save_as(fp_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_2 = test_dir / "test_2.dcm"
     ds_2 = pydicom.dataset.Dataset()
@@ -265,10 +261,9 @@ def test_make_ds_list_dir(tmp_path):
     ds_2.file_meta.ImplementationVersionName = "report"
     ds_2.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_2.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
-    ds_2.is_implicit_VR = False
-    ds_2.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_1.file_meta)
-    ds_2.save_as(fp_2, write_like_original=False)
+    ds_2.save_as(fp_2, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fs = FileSet()
     fs.write(test_dir)
@@ -471,19 +466,17 @@ def test_get_all_series_details(tmp_path):
     ds_1.file_meta.ImplementationVersionName = "report"
     ds_1.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_1.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
-    ds_1.is_implicit_VR = False
-    ds_1.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_1.file_meta)
-    ds_1.save_as(fp_1, write_like_original=False)
+    ds_1.save_as(fp_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     # Patient 1, Study A, Series 1, Instance 2
     ds_2 = copy.deepcopy(ds_1)
     ds_2.SOPInstanceUID = pydicom.uid.generate_uid()
     ds_2.InstanceNumber = 2
-    ds_2.is_implicit_VR = False
-    ds_2.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_2.file_meta)
-    ds_2.save_as(fp_2, write_like_original=False)
+    ds_2.save_as(fp_2, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     # Patient 1, Study A, Series 7, Instance 43
     ds_3 = copy.deepcopy(ds_1)
@@ -492,10 +485,9 @@ def test_get_all_series_details(tmp_path):
     ds_3.SeriesInstanceUID = pydicom.uid.generate_uid()
     ds_3.SeriesNumber = 7
     ds_3.InstanceNumber = 43
-    ds_3.is_implicit_VR = False
-    ds_3.is_little_endian = True
+
     pydicom.dataset.validate_file_meta(ds_3.file_meta)
-    ds_3.save_as(fp_3, write_like_original=False)
+    ds_3.save_as(fp_3, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     series_details = dcmdiff.get_all_series_details(test_dir)
 
@@ -899,7 +891,7 @@ def test_prints_version(script_runner):
     assert result.success
     expected_version_output = SCRIPT_NAME + " " + __version__ + "\n"
     assert result.stdout == expected_version_output
-    
+
 
 def test_dcmdiff_single_files(tmp_path, script_runner):
 
@@ -925,15 +917,13 @@ def test_dcmdiff_single_files(tmp_path, script_runner):
     ds_r.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_r.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
 
-    ds_r.is_implicit_VR = False
-    ds_r.is_little_endian = True
     pydicom.dataset.validate_file_meta(ds_r.file_meta)
-    ds_r.save_as(fp_r, write_like_original=False)
+    ds_r.save_as(fp_r, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_t = tmp_path / "test.dcm"
     ds_t = copy.deepcopy(ds_r)
     ds_t.RepetitionTime = 2000
-    ds_t.save_as(fp_t, write_like_original=False)
+    ds_t.save_as(fp_t, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     output_dir = tmp_path / "htmldiff"
 
@@ -1017,10 +1007,8 @@ def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
     ds_r.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_r.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
 
-    ds_r.is_implicit_VR = False
-    ds_r.is_little_endian = True
     pydicom.dataset.validate_file_meta(ds_r.file_meta)
-    ds_r.save_as(fp_r, write_like_original=False)
+    ds_r.save_as(fp_r, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_t_1 = test_dp / "test.dcm"
     ds_t_1 = copy.deepcopy(ds_r)
@@ -1028,7 +1016,7 @@ def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
     ds_t_1.Modality = "CT"
     ds_t_1.SeriesNumber = 9
     ds_t_1.SOPInstanceUID = pydicom.uid.generate_uid()
-    ds_t_1.save_as(fp_t_1, write_like_original=False)
+    ds_t_1.save_as(fp_t_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     output_dir = tmp_path / "htmldiff"
     output_dir.mkdir()
@@ -1118,22 +1106,20 @@ def test_dcmdiff_dirs_no_match_inst(tmp_path, script_runner):
     ds_r.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_r.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
 
-    ds_r.is_implicit_VR = False
-    ds_r.is_little_endian = True
     pydicom.dataset.validate_file_meta(ds_r.file_meta)
-    ds_r.save_as(fp_r, write_like_original=False)
+    ds_r.save_as(fp_r, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_t_1 = test_dp / "test.dcm"
     ds_t_1 = copy.deepcopy(ds_r)
     ds_t_1.InstanceNumber = 1
     ds_t_1.SOPInstanceUID = pydicom.uid.generate_uid()
-    ds_t_1.save_as(fp_t_1, write_like_original=False)
+    ds_t_1.save_as(fp_t_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_t_2 = test_dp / "test_2.dcm"
     ds_t_2 = copy.deepcopy(ds_r)
     ds_t_2.InstanceNumber = 2
     ds_t_2.SOPInstanceUID = pydicom.uid.generate_uid()
-    ds_t_2.save_as(fp_t_2, write_like_original=False)
+    ds_t_2.save_as(fp_t_2, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     output_dir = tmp_path / "htmldiff"
     output_dir.mkdir()
@@ -1232,15 +1218,13 @@ def test_dcmdiff_single_remove_tags(tmp_path, script_runner):
     ds_r.file_meta.ImplementationClassUID = "1.2.3.4"
     ds_r.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.4"
 
-    ds_r.is_implicit_VR = False
-    ds_r.is_little_endian = True
     pydicom.dataset.validate_file_meta(ds_r.file_meta)
-    ds_r.save_as(fp_r, write_like_original=False)
+    ds_r.save_as(fp_r, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     fp_t = tmp_path / "test.dcm"
     ds_t = copy.deepcopy(ds_r)
     ds_t.RepetitionTime = 2000
-    ds_t.save_as(fp_t, write_like_original=False)
+    ds_t.save_as(fp_t, implicit_vr=False, little_endian=True, enforce_file_format=True)
 
     output_dir = tmp_path / "htmldiff"
 
