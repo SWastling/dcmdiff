@@ -1,6 +1,7 @@
 import builtins
 import copy
 import pathlib
+import importlib.metadata
 
 import mock
 import pydicom
@@ -11,6 +12,7 @@ import dcmdiff.dcmdiff as dcmdiff
 
 THIS_DIR = pathlib.Path(__file__).resolve().parent
 TEST_DATA_DIR = THIS_DIR / "test_data"
+__version__ = importlib.metadata.version("dcmdiff")
 
 
 @pytest.mark.parametrize(
@@ -891,6 +893,13 @@ def test_prints_help_for_invalid_option(script_runner):
     assert not result.success
     assert result.stderr.startswith(SCRIPT_USAGE)
 
+
+def test_prints_version(script_runner):
+    result = script_runner.run([SCRIPT_NAME, "--version"])
+    assert result.success
+    expected_version_output = SCRIPT_NAME + " " + __version__ + "\n"
+    assert result.stdout == expected_version_output
+    
 
 def test_dcmdiff_single_files(tmp_path, script_runner):
 
