@@ -1,6 +1,6 @@
 [project]
 name = "dcmdiff"
-version = "1.0.0"
+version = "1.0.1"
 description = "Find differences between DICOM instances, series or studies"
 readme = "README.md"
 authors = [
