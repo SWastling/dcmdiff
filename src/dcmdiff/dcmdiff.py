@@ -578,7 +578,6 @@ def tags_to_list(ds):
 
 
 def main():
-
     parser = argparse.ArgumentParser(
         description="Find differences between DICOM instances, series or studies"
     )
@@ -783,7 +782,6 @@ def main():
                 t_ds = find_matching_instance(r_inst_num, t_series_ds_dict)
 
                 if t_ds is not None:
-
                     rep = []
                     for ds in [r_ds, t_ds]:
                         if args.ignore_private:
@@ -825,7 +823,6 @@ def main():
                     with open(fp_instance_html, "w") as f:
                         f.writelines(diff)
                 else:
-
                     f_instance_html = open(fp_instance_html, "w")
                     f_instance_html.writelines(
                         [

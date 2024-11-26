@@ -51,13 +51,12 @@ def test_simplify_series(test_description, expected_output):
 
 
 def test_read_tag_file_no_file(tmp_path, capsys):
-
     tag_to_comp_fp = tmp_path / "tags.txt"
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         dcmdiff.read_tag_file(tag_to_comp_fp)
 
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type is SystemExit
     assert pytest_wrapped_e.value.code == 1
 
     captured = capsys.readouterr()
@@ -66,14 +65,13 @@ def test_read_tag_file_no_file(tmp_path, capsys):
 
 
 def test_read_tag_file_no_tags(tmp_path, capsys):
-
     tag_to_comp_fp = tmp_path / "tags.txt"
     tag_to_comp_fp.touch()
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         dcmdiff.read_tag_file(tag_to_comp_fp)
 
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type is SystemExit
     assert pytest_wrapped_e.value.code == 1
 
     captured = capsys.readouterr()
@@ -82,7 +80,6 @@ def test_read_tag_file_no_tags(tmp_path, capsys):
 
 
 def test_read_tag_file(tmp_path, capsys):
-
     tag_to_comp_fp = tmp_path / "tags.txt"
     tag_to_comp_fp.touch()
 
@@ -102,7 +99,6 @@ def test_read_tag_file(tmp_path, capsys):
 
 
 def test_append_if_dicom(tmp_path):
-
     fp_not_file = tmp_path / "file_not_exist"
     fp_not_dicom = tmp_path / "not_dicom"
     fp_not_dicom.touch()
@@ -179,7 +175,7 @@ def test_make_ds_list_error_1(tmp_path, capsys):
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         dcmdiff.make_ds_list(fp_not_dicom)
 
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type is SystemExit
     assert pytest_wrapped_e.value.code == 1
 
     captured = capsys.readouterr()
@@ -193,7 +189,7 @@ def test_make_ds_list_error_2(tmp_path, capsys):
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         dcmdiff.make_ds_list(fp_not_file)
 
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type is SystemExit
     assert pytest_wrapped_e.value.code == 1
 
     captured = capsys.readouterr()
@@ -225,7 +221,6 @@ def test_make_ds_list_file(tmp_path):
 
 
 def test_make_ds_list_dir(tmp_path):
-
     test_dir = tmp_path / "dir1"
     test_dir.mkdir()
 
@@ -273,7 +268,6 @@ def test_make_ds_list_dir(tmp_path):
 
 
 def test_sort_ds_list():
-
     # Patient 1, Study A, Series 1, Instance 1
     ds_1 = pydicom.dataset.Dataset()
     ds_1.SOPInstanceUID = pydicom.uid.generate_uid()
@@ -387,13 +381,11 @@ def test_sort_ds_list():
 
 
 def test_get_patient_ds_dict_1pat():
-
     ds_dict = {"1.2.3.4.5.6": {"patient_name": "surname-firstname"}}
     assert dcmdiff.get_patient_ds_dict(ds_dict) == {"patient_name": "surname-firstname"}
 
 
 def test_get_patient_ds_dict_2pat(capsys):
-
     ds_dict = {
         "123456": {"patient_name": "surname-firstname"},
         "78910": {"patient_name": "surname1-firstname1"},
@@ -408,7 +400,6 @@ def test_get_patient_ds_dict_2pat(capsys):
 
 
 def test_get_study_ds_dict_1study():
-
     ds_dict = {
         "patient_name": "surname-firstname",
         "1.2.3.4.5.6": {"study_datetime": "20220101.120000", "study_desc": "study_a"},
@@ -420,7 +411,6 @@ def test_get_study_ds_dict_1study():
 
 
 def test_get_study_ds_dict_2study(capsys):
-
     ds_dict = {
         "patient_name": "surname-firstname",
         "1.2.3.4.5.6": {"study_datetime": "20220101.120000", "study_desc": "study_a"},
@@ -439,7 +429,6 @@ def test_get_study_ds_dict_2study(capsys):
 
 
 def test_get_all_series_details(tmp_path):
-
     test_dir = tmp_path / "test_study"
     test_dir.mkdir()
     fp_1 = test_dir / "01.dcm"
@@ -523,7 +512,6 @@ def test_get_all_series_details(tmp_path):
 
 
 def test_choose_series(capsys):
-
     series_list = [
         (
             "1.2.3.4.5",
@@ -574,7 +562,6 @@ def test_choose_series(capsys):
 
 
 def test_find_matching_series(capsys):
-
     series_list = [
         (
             "1.2.3.4.5",
@@ -661,7 +648,6 @@ def test_find_matching_series(capsys):
 
 
 def test_choose_instance(capsys):
-
     ds_1 = pydicom.dataset.Dataset()
     ds_1.InstanceNumber = 1
 
@@ -692,7 +678,6 @@ def test_choose_instance(capsys):
 
 
 def test_find_matching_instance(capsys):
-
     ds_1 = pydicom.dataset.Dataset()
     ds_1.SOPInstanceUID = pydicom.uid.generate_uid()
     ds_1.InstanceNumber = 1
@@ -845,7 +830,6 @@ def test_remove_group_tags():
 
 
 def test_tags_to_list():
-
     ds = pydicom.dataset.Dataset()
     ds.PatientName = "SURNAME^Firstname"
     ds.PatientID = "ABC1234567"
@@ -894,7 +878,6 @@ def test_prints_version(script_runner):
 
 
 def test_dcmdiff_single_files(tmp_path, script_runner):
-
     fp_r = tmp_path / "ref.dcm"
     ds_r = pydicom.dataset.Dataset()
     ds_r.StudyDate = "20220101"
@@ -927,7 +910,9 @@ def test_dcmdiff_single_files(tmp_path, script_runner):
 
     output_dir = tmp_path / "htmldiff"
 
-    result = script_runner.run([SCRIPT_NAME, str(fp_r), str(fp_t), "-o", str(output_dir)])
+    result = script_runner.run(
+        [SCRIPT_NAME, str(fp_r), str(fp_t), "-o", str(output_dir)]
+    )
     assert result.success
     assert output_dir.is_dir()
 
@@ -979,7 +964,6 @@ def test_dcmdiff_single_files(tmp_path, script_runner):
 
 
 def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
-
     ref_dp = tmp_path / "ref"
     ref_dp.mkdir()
 
@@ -1016,7 +1000,9 @@ def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
     ds_t_1.Modality = "CT"
     ds_t_1.SeriesNumber = 9
     ds_t_1.SOPInstanceUID = pydicom.uid.generate_uid()
-    ds_t_1.save_as(fp_t_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
+    ds_t_1.save_as(
+        fp_t_1, implicit_vr=False, little_endian=True, enforce_file_format=True
+    )
 
     output_dir = tmp_path / "htmldiff"
     output_dir.mkdir()
@@ -1024,11 +1010,7 @@ def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
     # chose not to select a series when no matches found automatically
     with mock.patch.object(builtins, "input", lambda _: "n"):
         result = script_runner.run(
-            [SCRIPT_NAME,
-            str(ref_dp),
-            str(test_dp),
-            "-o",
-            str(output_dir)]
+            [SCRIPT_NAME, str(ref_dp), str(test_dp), "-o", str(output_dir)]
         )
 
     assert result.success
@@ -1078,7 +1060,6 @@ def test_dcmdiff_dirs_no_match_ser(tmp_path, script_runner):
 
 
 def test_dcmdiff_dirs_no_match_inst(tmp_path, script_runner):
-
     ref_dp = tmp_path / "ref"
     ref_dp.mkdir()
 
@@ -1113,13 +1094,17 @@ def test_dcmdiff_dirs_no_match_inst(tmp_path, script_runner):
     ds_t_1 = copy.deepcopy(ds_r)
     ds_t_1.InstanceNumber = 1
     ds_t_1.SOPInstanceUID = pydicom.uid.generate_uid()
-    ds_t_1.save_as(fp_t_1, implicit_vr=False, little_endian=True, enforce_file_format=True)
+    ds_t_1.save_as(
+        fp_t_1, implicit_vr=False, little_endian=True, enforce_file_format=True
+    )
 
     fp_t_2 = test_dp / "test_2.dcm"
     ds_t_2 = copy.deepcopy(ds_r)
     ds_t_2.InstanceNumber = 2
     ds_t_2.SOPInstanceUID = pydicom.uid.generate_uid()
-    ds_t_2.save_as(fp_t_2, implicit_vr=False, little_endian=True, enforce_file_format=True)
+    ds_t_2.save_as(
+        fp_t_2, implicit_vr=False, little_endian=True, enforce_file_format=True
+    )
 
     output_dir = tmp_path / "htmldiff"
     output_dir.mkdir()
@@ -1195,7 +1180,6 @@ def test_dcmdiff_dirs_no_match_inst(tmp_path, script_runner):
 
 
 def test_dcmdiff_single_remove_tags(tmp_path, script_runner):
-
     fp_r = tmp_path / "ref.dcm"
     ds_r = pydicom.dataset.Dataset()
     ds_r.StudyDate = "20220101"
@@ -1235,23 +1219,25 @@ def test_dcmdiff_single_remove_tags(tmp_path, script_runner):
         f.writelines(["RepetitionTime\n", "0x00100010\n"])
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(fp_r),
-        str(fp_t),
-        "-o",
-        str(output_dir),
-        "-c",
-        str(tags_fp),
-        "--compare-one-inst",
-        "--ignore-private",
-        "--ignore-vr",
-        "UI",
-        "DT",
-        "--ignore-group",
-        "0x0010",
-        "--ignore-tag",
-        "Rows",
-        "SeriesNumber"]
+        [
+            SCRIPT_NAME,
+            str(fp_r),
+            str(fp_t),
+            "-o",
+            str(output_dir),
+            "-c",
+            str(tags_fp),
+            "--compare-one-inst",
+            "--ignore-private",
+            "--ignore-vr",
+            "UI",
+            "DT",
+            "--ignore-group",
+            "0x0010",
+            "--ignore-tag",
+            "Rows",
+            "SeriesNumber",
+        ]
     )
     assert result.success
     assert output_dir.is_dir()
