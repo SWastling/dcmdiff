@@ -7,13 +7,10 @@ import re
 import sys
 import webbrowser
 
-import importlib_metadata as metadata
+import importlib.metadata
 import pydicom
 
-try:
-    __version__ = metadata.version("dcmdiff")
-except metadata.PackageNotFoundError:  # pragma: no cover
-    __version__ = "unknown"
+__version__ = importlib.metadata.version("dcmdiff")
 
 
 # useful patterns for simplifying names
